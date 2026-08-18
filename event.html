@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS ESPORT — Tournament Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #070709;
+      --surface: #0f1014;
+      --border: #1e2030;
+      --accent: #00ff88;
+      --accent-glow: rgba(0, 255, 136, 0.15);
+      --red: #ff4655;
+      --red-glow: rgba(255, 70, 85, 0.15);
+      --yellow: #fbbf24;
+      --blue: #60a5fa;
+      --blue-glow: rgba(96, 165, 250, 0.15);
+      --text: #e8e6e3;
+      --text-muted: #5a5d6e;
+      --text-dim: #3a3d4e;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Mono', monospace;
+      --font-heading: 'Syne', sans-serif;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(0, 255, 136, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(255, 70, 85, 0.04) 0%, transparent 50%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 7, 9, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-logo::after {
+      content: '//';
+      color: var(--text-dim);
+      margin-left: 0.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* PAGE */
+    .page-wrapper {
+      padding-top: 6rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content-inner {
+      max-width: 1100px;
+      width: 100%;
+      padding: 0 2.5rem;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 3rem 0 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.2s;
+    }
+
+    .hero-label {
+      font-family: var(--font-heading);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .hero-label::before {
+      content: '//';
+      color: var(--text-dim);
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      letter-spacing: 0.06em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* STAT CARDS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.35s;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 30px;
+      height: 30px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 30px;
+      height: 30px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+    }
+
+    .stat-card-title {
+      font-family: var(--font-heading);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+    }
+
+    .stat-card-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+    }
+
+    .stat-card-desc {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* SECTION HEADER */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2.5rem 0 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.5s;
+    }
+
+    .section-prefix {
+      font-family: var(--font-heading);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .section-title .number {
+      color: var(--accent);
+    }
+
+    .section-desc {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--surface);
+      padding: 0.25rem;
+      border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .filter-btn {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-muted);
+    }
+
+    .filter-btn.active {
+      color: var(--accent);
+      background: var(--surface);
+    }
+
+    .filter-count {
+      font-size: 0.55rem;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .filter-btn.active .filter-count {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .filter-btn.live-btn .filter-count {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* EVENTS LIST */
+    .events-list {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-bottom: 5rem;
+    }
+
+    /* LIST DIVIDER */
+    .list-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1.8rem 1.2rem 0.8rem;
+      opacity: 0;
+      animation: fadeUp 0.4s ease forwards;
+    }
+
+    .list-divider .div-icon {
+      width: 8px;
+      height: 8px;
+    }
+
+    .list-divider[data-status="ongoing"] .div-icon {
+      background: var(--red);
+    }
+
+    .list-divider[data-status="upcoming"] .div-icon {
+      background: var(--blue);
+    }
+
+    .list-divider[data-status="completed"] .div-icon {
+      background: var(--accent);
+    }
+
+    .list-divider .div-label {
+      font-family: var(--font-heading);
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .list-divider .div-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* EVENT CARD */
+    .event-card {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1.2rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+      transition: all 0.25s;
+      opacity: 0;
+      animation: fadeUp 0.45s ease forwards;
+    }
+
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .event-card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .event-card:hover {
+      border-color: var(--accent);
+    }
+
+    .event-card:hover::before,
+    .event-card:hover::after {
+      opacity: 1;
+    }
+
+    .event-card:nth-child(2) {
+      animation-delay: 0.05s;
+    }
+
+    .event-card:nth-child(3) {
+      animation-delay: 0.08s;
+    }
+
+    .event-card:nth-child(4) {
+      animation-delay: 0.11s;
+    }
+
+    .event-card:nth-child(5) {
+      animation-delay: 0.14s;
+    }
+
+    .event-card:nth-child(6) {
+      animation-delay: 0.17s;
+    }
+
+    .event-card:nth-child(7) {
+      animation-delay: 0.20s;
+    }
+
+    .event-card:nth-child(8) {
+      animation-delay: 0.23s;
+    }
+
+    .event-card:nth-child(9) {
+      animation-delay: 0.26s;
+    }
+
+    .event-card:nth-child(10) {
+      animation-delay: 0.29s;
+    }
+
+    .event-card:nth-child(11) {
+      animation-delay: 0.32s;
+    }
+
+    .event-card:nth-child(12) {
+      animation-delay: 0.35s;
+    }
+
+    .event-card.is-live {
+      border-color: rgba(255, 70, 85, 0.3);
+      background: linear-gradient(90deg, rgba(255, 70, 85, 0.04), var(--surface));
+    }
+
+    .event-card.is-live::before {
+      border-color: var(--red);
+      opacity: 1;
+    }
+
+    .event-card.is-live::after {
+      border-color: var(--red);
+      opacity: 1;
+    }
+
+    .event-card.is-live:hover {
+      border-color: var(--red);
+    }
+
+    /* Date */
+    .event-date-text {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .event-date-year {
+      font-family: var(--font-body);
+      font-size: 0.6rem;
+      color: var(--text-dim);
+    }
+
+    /* Info */
+    .event-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-width: 0;
+    }
+
+    .event-name-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .event-name {
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .event-badge {
+      font-family: var(--font-heading);
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .event-badge.major {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .event-badge.premier {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .event-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .event-meta-item {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+    }
+
+    .meta-dot {
+      width: 3px;
+      height: 3px;
+      background: var(--border);
+      border-radius: 50%;
+    }
+
+    .prize-highlight {
+      color: var(--yellow);
+      font-weight: 500;
+    }
+
+    /* Status */
+    .event-status-col {
+      text-align: right;
+      min-width: 90px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-heading);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border);
+    }
+
+    .status-badge.ongoing {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .status-badge.ongoing .pulse-dot {
+      width: 5px;
+      height: 5px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.3;
+        transform: scale(0.6);
+      }
+    }
+
+    .status-badge.upcoming {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .status-badge.completed {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .winner-text {
+      display: block;
+      margin-top: 0.4rem;
+      font-size: 0.6rem;
+      color: var(--yellow);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+    }
+
+    footer p {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+    }
+
+    footer a {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+    }
+
+    footer a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .content-inner {
+        padding: 0 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .event-card {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        padding: 1rem;
+      }
+
+      .event-status-col {
+        text-align: left;
+      }
+
+      .filter-bar {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh"></div>
+
+  <nav>
+    <a href="home.html" class="nav-logo">NEXUS ESPORT</a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="ranking.html">Ranking</a></li>
+      <li><a href="event.html"class="active">Events</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="joint.html" >Join</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="content-inner">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-label">Majors & Championships</div>
+        <h1>TOURNAMENT<br>TRACKER</h1>
+        <p class="hero-subtitle">All upcoming and ongoing premier esports tournaments CS2.</p>
+      </section>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-title">Upcoming Events</div>
+          <div class="stat-card-value">4</div>
+          <div class="stat-card-desc">Remaining this season</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Total Prize Pool</div>
+          <div class="stat-card-value">$7.8M</div>
+          <div class="stat-card-desc">Across 12 events in 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-title">Majors Tracked</div>
+          <div class="stat-card-value">3</div>
+          <div class="stat-card-desc">Valve-sponsored majors</div>
+        </div>
+      </div>
+
+      <!-- SECTION HEADER -->
+      <div class="section-header">
+        <div>
+          <span class="section-prefix">// Tournament Tracker</span>
+          <h2 class="section-title"><span class="number">8</span> EVENTS</h2>
+          <p class="section-desc">All upcoming and ongoing premier esports tournaments across CS2.</p>
+        </div>
+        <div class="filter-bar">
+          <button class="filter-btn active" data-filter="all">All <span class="filter-count">12</span></button>
+          <button class="filter-btn live-btn" data-filter="ongoing">Live <span class="filter-count">1</span></button>
+          <button class="filter-btn" data-filter="upcoming">Upcoming <span class="filter-count">4</span></button>
+          <button class="filter-btn" data-filter="completed">Completed <span class="filter-count">7</span></button>
+        </div>
+      </div>
+
+      <!-- EVENTS LIST -->
+      <div class="events-list" id="eventsList">
+
+        <!-- ONGOING -->
+        <div class="list-divider" data-status="ongoing">
+          <span class="div-icon"></span>
+          <span class="div-label">Ongoing</span>
+          <span class="div-line"></span>
+        </div>
+
+        <div class="event-card is-live" data-status="ongoing">
+          <div class="event-date-col">
+            <span class="event-date-text">Aug 11 — Aug 24</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">IEM Cologne 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Cologne, Germany</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$250,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge ongoing"><span class="pulse-dot"></span>ONGOING</span>
+          </div>
+        </div>
+
+        <!-- UPCOMING -->
+        <div class="list-divider" data-status="upcoming">
+          <span class="div-icon"></span>
+          <span class="div-label">Upcoming</span>
+          <span class="div-line"></span>
+        </div>
+
+        <div class="event-card" data-status="upcoming">
+          <div class="event-date-col">
+            <span class="event-date-text">Sep 01 — Sep 07</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">ESL Pro League Season 22</span>
+              <span class="event-badge major">EPT Championship</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">TBD</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$300,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="upcoming">
+          <div class="event-date-col">
+            <span class="event-date-text">Sep 15 — Sep 21</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">BLAST Premier Fall Groups 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Copenhagen, Denmark</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$177,500</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="upcoming">
+          <div class="event-date-col">
+            <span class="event-date-text">Oct 08 — Oct 19</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">PGL Major Singapore 2026</span>
+              <span class="event-badge major">Valve Major</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Singapore</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$1,250,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="upcoming">
+          <div class="event-date-col">
+            <span class="event-date-text">Nov 16 — Nov 22</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">BLAST Premier Fall Final 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">TBD</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$425,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <!-- COMPLETED -->
+        <div class="list-divider" data-status="completed">
+          <span class="div-icon"></span>
+          <span class="div-label">Completed</span>
+          <span class="div-line"></span>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Jan 12 — Jan 19</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">BLAST Bounty Winter 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Copenhagen, Denmark</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$350,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">Team Spirit</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Jan 29 — Feb 09</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">IEM Katowice 2026</span>
+              <span class="event-badge major">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Katowice, Poland</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$1,000,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">G2 Esports</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Mar 07 — Mar 15</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">PGL Major Copenhagen 2026</span>
+              <span class="event-badge major">Valve Major</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Copenhagen, Denmark</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$1,250,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">Natus Vincere</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Apr 10 — Apr 19</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">ESL Pro League Season 21</span>
+              <span class="event-badge premier">EPT Championship</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Malta</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$300,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">FaZe Clan</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">May 14 — May 24</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">BLAST.tv Austin Major 2026</span>
+              <span class="event-badge major">Valve Major</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Austin, Texas, USA</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$1,250,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">Team Vitality</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Jun 02 — Jun 08</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">IEM Dallas 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">Dallas, Texas, USA</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$250,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">MOUZ</span>
+          </div>
+        </div>
+
+        <div class="event-card" data-status="completed">
+          <div class="event-date-col">
+            <span class="event-date-text">Jul 06 — Jul 13</span>
+            <span class="event-date-year">2026</span>
+          </div>
+          <div class="event-info">
+            <div class="event-name-row">
+              <span class="event-name">BLAST Premier Spring Final 2026</span>
+              <span class="event-badge premier">Premier LAN</span>
+            </div>
+            <div class="event-meta-row">
+              <span class="event-meta-item">London, UK</span>
+              <span class="meta-dot"></span>
+              <span class="event-meta-item prize-highlight">$425,000</span>
+            </div>
+          </div>
+          <div class="event-status-col">
+            <span class="status-badge completed">Completed</span>
+            <span class="winner-text">Team Spirit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer>
+        <p>Data sourced from HLTV.org</p>
+        <a href="https://www.hltv.org/events" target="_blank">View full calendar on HLTV →</a>
+      </footer>
+
+    </div>
+
+
+  </div>
+
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.event-card');
+    const dividers = document.querySelectorAll('.list-divider');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        cards.forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.status === filter) ? '' : 'none';
+        });
+        dividers.forEach(div => {
+          div.style.display = (filter === 'all' || div.dataset.status === filter) ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Registration — Nexus Esport</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #070709;
+      --surface: #0f1014;
+      --border: #1e2030;
+      --accent: #00ff88;
+      --accent-glow: rgba(0, 255, 136, 0.15);
+      --red: #ff4655;
+      --red-glow: rgba(255, 70, 85, 0.15);
+      --text: #e8e6e3;
+      --text-muted: #5a5d6e;
+      --text-dim: #3a3d4e;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Mono', monospace;
+      --font-heading: 'Syne', sans-serif;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9998;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(0, 255, 136, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 80%, rgba(255, 70, 85, 0.04) 0%, transparent 50%);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7, 7, 9, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .nav-logo::after {
+      content: '//';
+      color: var(--text-dim);
+      margin-left: 0.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* PAGE */
+    .page-wrapper {
+      padding-top: 6rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    /* FORM */
+    .form-section {
+      padding: 3rem 2.5rem 5rem;
+      max-width: 680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      position: relative;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.3s;
+    }
+
+    .form-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 40px;
+      height: 40px;
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+
+    .form-card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+
+    /* FORM HEADER — matches image title */
+    .form-header {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-header p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* FORM ROWS */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-row.full {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* LABELS — uppercase style matching image */
+    .form-group label {
+      font-family: var(--font-heading);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group label .required {
+      color: var(--red);
+      margin-left: 0.2rem;
+    }
+
+    /* INPUTS */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.8rem 1rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235a5d6e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-glow), 0 0 20px var(--accent-glow);
+    }
+
+    .form-group input.invalid,
+    .form-group select.invalid {
+      border-color: var(--red);
+      box-shadow: 0 0 0 1px var(--red-glow);
+    }
+
+    .form-group .error-msg {
+      font-size: 0.65rem;
+      color: var(--red);
+      margin-top: 0.3rem;
+      min-height: 1rem;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .form-group .error-msg.visible {
+      opacity: 1;
+    }
+
+    /* SUBMIT BUTTON */
+    .submit-section {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn-submit {
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      padding: 1rem 2.5rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: #33ffaa;
+      letter-spacing: 0.2em;
+      box-shadow: 0 0 30px var(--accent-glow);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.97);
+    }
+
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-submit:hover::after {
+      left: 100%;
+    }
+
+    .submit-note {
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      max-width: 250px;
+    }
+
+    /* SUCCESS OVERLAY */
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 7, 9, 0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .success-overlay.active {
+      display: flex;
+    }
+
+    .success-check {
+      width: 80px;
+      height: 80px;
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .success-check svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--accent);
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 50;
+      stroke-dashoffset: 50;
+      animation: drawCheck 0.5s ease forwards 0.3s;
+    }
+
+    .success-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      animation: fadeUp 0.4s ease forwards 0.4s;
+      opacity: 0;
+    }
+
+    .success-msg {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      animation: fadeUp 0.4s ease forwards 0.5s;
+      opacity: 0;
+    }
+
+    .btn-close-success {
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.7rem 2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+      animation: fadeUp 0.4s ease forwards 0.6s;
+      opacity: 0;
+    }
+
+    .btn-close-success:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ADMIN TABLE */
+    .admin-section {
+      padding: 2rem 2.5rem 5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.8s;
+    }
+
+    .admin-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      letter-spacing: 0.1em;
+    }
+
+    .admin-header h2 span {
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-left: 0.5rem;
+    }
+
+    .admin-auth {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .admin-auth input {
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.8rem;
+      outline: none;
+      width: 160px;
+      border-radius: 0;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .admin-auth input:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 1px var(--red-glow);
+    }
+
+    .admin-auth input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn-admin-unlock {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--text-dim);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .btn-admin-unlock:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .btn-clear {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--red);
+      color: var(--red);
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: none;
+    }
+
+    .btn-clear:hover {
+      background: var(--red);
+      color: var(--bg);
+    }
+
+    .btn-clear.visible {
+      display: inline-block;
+    }
+
+    .admin-auth .auth-msg {
+      font-size: 0.6rem;
+      color: var(--red);
+      margin-left: 0.3rem;
+      min-width: 80px;
+    }
+
+    .admin-divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.85s;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.9s;
+    }
+
+    .member-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    .member-table thead th {
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-align: left;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .member-table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .member-table tbody tr:hover {
+      background: var(--surface);
+    }
+
+    .member-table tbody td {
+      font-size: 0.75rem;
+      padding: 0.8rem 1rem;
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .member-table .td-id {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+    }
+
+    .role-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .role-badge.player {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .role-badge.coach {
+      border-color: #7c6aef;
+      color: #7c6aef;
+    }
+
+    .role-badge.organizer {
+      border-color: #e8a44a;
+      color: #e8a44a;
+    }
+
+    .role-badge.creator {
+      border-color: #4ac2e8;
+      color: #4ac2e8;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+    }
+
+    .empty-state .empty-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.3;
+    }
+
+    .btn-delete-row {
+      font-family: var(--font-body);
+      font-size: 0.55rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 0.25rem 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: none;
+    }
+
+    .btn-delete-row:hover {
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    .btn-delete-row.visible {
+      display: inline-block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes scaleIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes drawCheck {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .form-section {
+        padding: 2rem 1.5rem;
+      }
+
+      .form-card {
+        padding: 1.5rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-section {
+        padding: 1.5rem;
+      }
+
+      .submit-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh"></div>
+
+  <nav>
+    <a href="home.html" class="nav-logo">NEXUS ESPORT</a>
+    <ul class="nav-links">
+      <li><a href="home.html">Home</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="ranking.html">Ranking</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="joint.html" class="active">Join</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- FORM — every field matches the image exactly -->
+    <section class="form-section">
+      <form id="joinForm" class="form-card" novalidate>
+
+        <!-- IMAGE TEXT: "MEMBER REGISTRATION" + "All fields marked with * are required." -->
+        <div class="form-header">
+          <h2>Member Registration</h2>
+          <p>All fields marked with * are required.</p>
+        </div>
+
+        <!-- IMAGE: "FULL NAME e.g. John Doe" + "STUDENT ID e.g. 2024001" -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name <span class="required">*</span></label>
+            <input type="text" id="fullName" placeholder="e.g. John Doe" required minlength="2">
+            <span class="error-msg" id="err-fullName"></span>
+          </div>
+          <div class="form-group">
+            <label>Student ID <span class="required">*</span></label>
+            <input type="text" id="studentId" placeholder="e.g. 2024001" required>
+            <span class="error-msg" id="err-studentId"></span>
+          </div>
+        </div>
+
+        <!-- IMAGE: "EMAIL you@university.edu" + "DISCORD USERNAME e.g. username#0001" -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" id="email" placeholder="you@university.edu" required>
+            <span class="error-msg" id="err-email"></span>
+          </div>
+          <div class="form-group">
+            <label>Discord Username</label>
+            <input type="text" id="discord" placeholder="e.g. username#0001">
+            <span class="error-msg" id="err-discord"></span>
+          </div>
+        </div>
+
+        <!-- IMAGE: "STEAM / GAME ID e.g. slmple_fan" + "CS2 RATING - Select Rating -" -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Steam / Game ID <span class="required">*</span></label>
+            <input type="text" id="gameId" placeholder="e.g. s1mple_fan" required>
+            <span class="error-msg" id="err-gameId"></span>
+          </div>
+          <div class="form-group">
+            <label>CS2 Rating</label>
+            <select id="rating">
+              <option value="">— Select Rating —</option>
+              <option value="0-1000">0 — 1,000</option>
+              <option value="1000-2000">1,000 — 2,000</option>
+              <option value="2000-3000">2,000 — 3,000</option>
+              <option value="3000-4000">3,000 — 4,000</option>
+              <option value="4000-5000">4,000 — 5,000</option>
+              <option value="5000-10000">5,000 — 10,000</option>
+              <option value="10000+">10,000+</option>
+              <option value="Faceit1-4">Faceit Level 1-4</option>
+              <option value="Faceit5-7">Faceit Level 5-7</option>
+              <option value="Faceit8-10">Faceit Level 8-10</option>
+              <option value="Other">Other</option>
+            </select>
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <!-- IMAGE: "PREFERRED ROLE - Select Role -" + "TOURNAMENT INTEREST - Optional -" -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred Role <span class="required">*</span></label>
+            <select id="role" required>
+              <option value="">— Select Role —</option>
+              <option value="Player">Player / Competitor</option>
+              <option value="Coach">Coach / Analyst</option>
+              <option value="Organizer">Tournament Organizer</option>
+              <option value="Creator">Content Creator / Caster</option>
+            </select>
+            <span class="error-msg" id="err-role"></span>
+          </div>
+          <div class="form-group">
+            <label>Tournament Interest</label>
+            <select id="tournament">
+              <option value="">— Optional —</option>
+              <option value="Internal Scrims">Internal Scrims</option>
+              <option value="National Collegiate">National Collegiate</option>
+              <option value="All">All Tournaments</option>
+            </select>
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <!-- IMAGE: "WHY DO YOU WANT TO JOIN? Tell us a bit about yourself..." -->
+        <div class="form-row full">
+          <div class="form-group">
+            <label>Why Do You Want to Join?</label>
+            <textarea id="bio" placeholder="Tell us a bit about yourself..." maxlength="200"></textarea>
+            <span class="error-msg"></span>
+          </div>
+        </div>
+
+        <!-- IMAGE: "REGISTER NOW" button + "Data stored via browser cookies (max ~4KB)." -->
+        <div class="submit-section">
+          <button type="submit" class="btn-submit">Register Now</button>
+          <p class="submit-note"></p>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- SUCCESS OVERLAY -->
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-check"><svg viewBox="0 0 24 24">
+          <polyline points="4 12 10 18 20 6"></polyline>
+        </svg></div>
+      <div class="success-title">WELCOME TO NEXUS</div>
+      <p class="success-msg">Your registration has been saved.<br>Check Discord for club announcements.</p>
+      <button class="btn-close-success" onclick="closeSuccess()">Back to Form</button>
+    </div>
+
+    <!-- ADMIN TABLE -->
+    <section class="admin-section">
+      <div class="admin-header">
+        <h2>Registered Members <span id="adminCount">// 0</span></h2>
+        <div class="admin-auth">
+          <input type="password" id="adminPassword" placeholder="Admin password">
+          <button class="btn-admin-unlock" onclick="attemptUnlock()">Unlock</button>
+          <button class="btn-clear" id="btnClear" onclick="clearAllData()">Clear All</button>
+          <span class="auth-msg" id="authMsg"></span>
+        </div>
+      </div>
+      <div class="admin-divider"></div>
+      <div class="table-wrapper">
+        <table class="member-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Student ID</th>
+              <th>Email</th>
+              <th>Game ID</th>
+              <th>Rating</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="memberTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    /* ═══ COOKIE DATABASE ENGINE ═══ */
+    const DB = {
+      prefix: 'nexus_db_',
+      maxChunks: 20,
+      chunkSize: 3500,
+      expiry: 365,
+      metaKey: 'nexus_db_meta',
+    };
+
+    function setCookie(n, v, d) {
+      const e = new Date(); e.setTime(e.getTime() + d * 86400000);
+      document.cookie = n + '=' + encodeURIComponent(v) + ';expires=' + e.toUTCString() + ';path=/;SameSite=Lax';
+    }
+    function getCookie(n) {
+      const ca = document.cookie.split(';');
+      for (let i = 0; i < ca.length; i++) { const c = ca[i].trim(); if (c.indexOf(n + '=') === 0) return decodeURIComponent(c.substring(n.length + 1)); }
+      return null;
+    }
+    function deleteCookie(n) { document.cookie = n + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;'; }
+
+    function dbWrite(data) {
+      const json = JSON.stringify(data);
+      const chunks = [];
+      for (let i = 0; i < json.length; i += DB.chunkSize) chunks.push(json.substring(i, i + DB.chunkSize));
+      if (chunks.length > DB.maxChunks) return { ok: false, msg: 'Data too large (' + chunks.length + ' chunks needed, max ' + DB.maxChunks + ')' };
+      for (let i = 0; i < chunks.length; i++) setCookie(DB.prefix + i, chunks[i], DB.expiry);
+      for (let i = chunks.length; i < DB.maxChunks; i++) deleteCookie(DB.prefix + i);
+      setCookie(DB.metaKey, JSON.stringify({ c: chunks.length, r: Array.isArray(data) ? data.length : 0 }), DB.expiry);
+      return { ok: true, chunks: chunks.length };
+    }
+
+    function dbRead() {
+      const meta = getCookie(DB.metaKey);
+      let n = 0;
+      if (meta) try { n = JSON.parse(meta).c || 0; } catch (e) { }
+      if (!n) for (let i = 0; i < DB.maxChunks; i++) { if (getCookie(DB.prefix + i) !== null) n = i + 1; else break; }
+      if (!n) return [];
+      let json = '';
+      for (let i = 0; i < n; i++) { const c = getCookie(DB.prefix + i); if (c === null) break; json += c; }
+      try { const d = JSON.parse(json); return Array.isArray(d) ? d : []; } catch (e) { return []; }
+    }
+
+    function dbClear() { for (let i = 0; i < DB.maxChunks; i++) deleteCookie(DB.prefix + i); deleteCookie(DB.metaKey); }
+
+    /* ═══ MEMBER CRUD ═══ */
+    function getAllMembers() { return dbRead(); }
+    function addMember(m) {
+      const all = getAllMembers();
+      m.id = 'NX-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substr(2, 3).toUpperCase();
+      m.registeredAt = new Date().toISOString();
+      all.push(m);
+      return dbWrite(all);
+    }
+    function deleteMember(id) { const all = getAllMembers().filter(m => m.id !== id); dbWrite(all); }
+    function clearAllMembers() { dbClear(); }
+
+    /* ═══ VALIDATION ═══ */
+    const form = document.getElementById('joinForm');
+    const validators = {
+      fullName: v => v.trim().length >= 2 ? '' : 'Name must be at least 2 characters.',
+      studentId: v => v.trim().length > 0 ? '' : 'Student ID is required.',
+      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Enter a valid email.',
+      gameId: v => v.trim().length > 0 ? '' : 'Game ID is required.',
+      role: v => v ? '' : 'Please select a role.',
+    };
+    Object.keys(validators).forEach(f => {
+      const inp = document.getElementById(f);
+      if (!inp) return;
+      inp.addEventListener('blur', () => showError(f, validators[f](inp.value)));
+      inp.addEventListener('input', () => { if (inp.classList.contains('invalid')) showError(f, validators[f](inp.value)); });
+    });
+    function showError(f, msg) {
+      const inp = document.getElementById(f), err = document.getElementById('err-' + f);
+      if (!inp || !err) return;
+      if (msg) { inp.classList.add('invalid'); err.textContent = msg; err.classList.add('visible'); }
+      else { inp.classList.remove('invalid'); err.textContent = ''; err.classList.remove('visible'); }
+    }
+
+    /* ═══ SUBMIT ═══ */
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      let valid = true;
+      Object.keys(validators).forEach(f => { const inp = document.getElementById(f); if (!inp) return; const m = validators[f](inp.value); showError(f, m); if (m) valid = false; });
+      if (!valid) { form.querySelector('.invalid')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+      const member = {
+        fullName: document.getElementById('fullName').value.trim(),
+        studentId: document.getElementById('studentId').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        discord: document.getElementById('discord').value.trim() || '—',
+        gameId: document.getElementById('gameId').value.trim(),
+        rating: document.getElementById('rating').value || '—',
+        role: document.getElementById('role').value,
+        tournament: document.getElementById('tournament').value || '—',
+        bio: document.getElementById('bio').value.trim() || '—',
+      };
+      const r = addMember(member);
+      if (!r.ok) { alert('Cookie storage full!\n' + r.msg); return; }
+      renderTable(); showSuccess(); form.reset();
+    });
+
+    /* ═══ ADMIN AUTH ═══ */
+    const ADMIN_PASS = 'nexus2026';
+    let isAdmin = false;
+    function attemptUnlock() {
+      const inp = document.getElementById('adminPassword'), msg = document.getElementById('authMsg');
+      if (inp.value === ADMIN_PASS) {
+        isAdmin = true; msg.style.color = 'var(--accent)'; msg.textContent = 'Access granted';
+        inp.value = ''; inp.disabled = true; inp.placeholder = 'Authenticated'; inp.style.borderColor = 'var(--accent)';
+        document.getElementById('btnClear').classList.add('visible');
+        document.querySelectorAll('.btn-delete-row').forEach(b => b.classList.add('visible'));
+        setTimeout(() => msg.textContent = '', 2000);
+      } else if (!inp.value) { msg.style.color = 'var(--red)'; msg.textContent = 'Enter password'; setTimeout(() => msg.textContent = '', 2000); }
+      else { msg.style.color = 'var(--red)'; msg.textContent = 'Wrong password'; inp.value = ''; setTimeout(() => msg.textContent = '', 2000); }
+    }
+    document.getElementById('adminPassword').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attemptUnlock(); } });
+
+    /* ═══ UI ═══ */
+    function showSuccess() { document.getElementById('successOverlay').classList.add('active'); }
+    function closeSuccess() { document.getElementById('successOverlay').classList.remove('active'); }
+    function clearAllData() { if (!isAdmin) return; if (confirm('DELETE ALL members?')) { clearAllMembers(); renderTable(); } }
+    function deleteSingle(id) { if (!isAdmin) return; if (confirm('Delete this member?')) { deleteMember(id); renderTable(); } }
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    function renderTable() {
+      const tb = document.getElementById('memberTableBody'), ms = getAllMembers();
+      document.getElementById('adminCount').textContent = '// ' + ms.length;
+      if (!ms.length) { tb.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">&#x2205;</div>No members registered yet.</div></td></tr>'; return; }
+      tb.innerHTML = ms.map((m, i) => {
+        const d = new Date(m.registeredAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const dc = isAdmin ? 'btn-delete-row visible' : 'btn-delete-row';
+        return '<tr><td class="td-id">' + String(i + 1).padStart(2, '0') + '</td><td>' + esc(m.fullName) + '</td><td>' + esc(m.studentId) + '</td><td>' + esc(m.email) + '</td><td>' + esc(m.gameId) + '</td><td>' + esc(m.rating) + '</td><td><span class="role-badge ' + (m.role || '').toLowerCase() + '">' + esc(m.role) + '</span></td><td>' + d + '</td><td><button class="' + dc + '" onclick="deleteSingle(\'' + m.id + '\')">Del</button></td></tr>';
+      }).join('');
+    }
+
+    renderTable();
+  </script>
+</body>
+
+</html>

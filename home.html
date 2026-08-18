@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Esports — Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #070709;
+            --surface: #0f1014;
+            --border: #1e2030;
+            --accent: #00ff88;
+            --accent-glow: rgba(0, 255, 136, 0.15);
+            --red: #ff4655;
+            --red-glow: rgba(255, 70, 85, 0.15);
+            --text: #e8e6e3;
+            --text-muted: #5a5d6e;
+            --text-dim: #3a3d4e;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Mono', monospace;
+            --font-heading: 'Syne', sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(0, 255, 136, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 80%, rgba(255, 70, 85, 0.04) 0%, transparent 50%);
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(7, 7, 9, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .nav-logo::after {
+            content: '//';
+            color: var(--text-dim);
+            margin-left: 0.3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .nav-toggler {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.4rem 0.8rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* PAGE */
+        .page-wrapper {
+            padding-top: 6rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 88vh;
+            display: flex;
+            align-items: center;
+            background:
+                radial-gradient(ellipse at 75% 25%, rgba(0, 255, 136, 0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 15% 85%, rgba(255, 70, 85, 0.04) 0%, transparent 50%);
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.2s;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-label {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            padding: 0.3rem 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+            line-height: 0.95;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 .accent {
+            color: var(--accent);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-width: 480px;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* BUTTONS ROW — aligned horizontally */
+        .hero-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-accent {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-accent:hover {
+            background: #33ffaa;
+            letter-spacing: 0.2em;
+            box-shadow: 0 0 30px var(--accent-glow);
+            color: var(--bg);
+        }
+
+        .btn-accent::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-accent:hover::after {
+            left: 100%;
+        }
+
+        .btn-outline {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .hero-stat-number {
+            font-family: var(--font-display);
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* SECTION */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.4s;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .section-header .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .section-label {
+            font-family: var(--font-heading);
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-dim);
+            margin-bottom: 0.4rem;
+        }
+
+        /* NEWS CARDS */
+        .news-section {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .news-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 30px;
+            height: 30px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+
+        .news-card::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 30px;
+            height: 30px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+        }
+
+        .news-card:hover {
+            border-color: var(--accent);
+        }
+
+        .news-tag {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 0.2rem 0.65rem;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .news-card h3 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .news-card p {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            line-height: 1.7;
+        }
+
+        .news-date {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 1rem;
+        }
+
+        /* CAROUSEL */
+        .carousel-controls {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel-dot {
+            width: 32px;
+            height: 3px;
+            background: var(--text-dim);
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: var(--accent);
+        }
+
+        .carousel-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .carousel-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* MATCH CARDS */
+        .match-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .match-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .match-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .match-card::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .match-card:hover {
+            border-color: var(--accent);
+        }
+
+        .match-card:hover::before,
+        .match-card:hover::after {
+            opacity: 1;
+        }
+
+        .match-status {
+            font-family: var(--font-heading);
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 0.2rem 0.6rem;
+            margin-bottom: 1rem;
+            width: fit-content;
+            border: 1px solid var(--border);
+        }
+
+        .match-status.live {
+            border-color: var(--red);
+            color: var(--red);
+            animation: pulseLive 1.5s ease-in-out infinite;
+        }
+
+        .match-status.upcoming {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .match-status.completed {
+            border-color: var(--text-dim);
+            color: var(--text-muted);
+        }
+
+        @keyframes pulseLive {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .match-teams {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 0.8rem 0;
+        }
+
+        .match-team {
+            text-align: center;
+            flex: 1;
+        }
+
+        .match-team-logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text);
+            margin-bottom: 0.2rem;
+        }
+
+        .match-team-name {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .match-vs {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-dim);
+            flex-shrink: 0;
+        }
+
+        .match-score {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.7rem;
+            color: var(--accent);
+        }
+
+        .match-info {
+            font-size: 0.62rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            border-top: 1px solid var(--border);
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        /* INFO CARDS (Social & Sponsors) */
+        .card-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .card-grid.cols-4 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .card-grid.cols-6 {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        .card-grid.cols-2-centered {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: border-color 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .info-card::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 20px;
+            height: 20px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: var(--accent);
+        }
+
+        .info-card:hover::before,
+        .info-card:hover::after {
+            opacity: 1;
+        }
+
+        .info-card-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .info-card-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .info-card-sub {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand::after {
+            content: '//';
+            color: var(--text-dim);
+            margin-left: 0.3rem;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            max-width: 300px;
+            line-height: 1.7;
+        }
+
+        .footer-col h6 {
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col a {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            margin-bottom: 0.4rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                gap: 1rem;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(7, 7, 9, 0.95);
+                padding: 1.5rem 2.5rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-toggler {
+                display: block;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .hero {
+                min-height: 72vh;
+            }
+
+            .hero-stats {
+                gap: 1.8rem;
+                flex-wrap: wrap;
+            }
+
+            .hero-stat-number {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 3.5rem 0;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .match-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-grid.cols-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card-grid.cols-6 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card-grid.cols-2-centered {
+                grid-template-columns: 1fr;
+                max-width: 280px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- NAV -->
+    <nav>
+    <a href="home.html" class="nav-logo">NEXUS ESPORT</a>
+    <button class="nav-toggler" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="home.html" class="active">Home</a></li>
+      <li><a href="aboutus.html">About Us</a></li>
+      <li><a href="ranking.html">Ranking</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="joint.html">Join</a></li>
+    </ul>
+  </nav>
+
+    <div class="page-wrapper">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-label">NEXUS Esport</div>
+                    <h1>Compete.<br><span class="accent">Dominate.</span>Repeat.</h1>
+                    <p>The official competitive Counter-Strike 2 community at Universiti Tunku Abdul Rahman. Join 50+
+                        members in scrims, tournaments, and weekly game nights.</p>
+                    <div class="hero-buttons">
+                        <a href="joint.html" class="btn-accent">Join the Club</a>
+                        <a href="matches.html" class="btn-outline">View Matches</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div>
+                            <div class="hero-stat-number">50+</div>
+                            <div class="hero-stat-label">Active Members</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-number">12</div>
+                            <div class="hero-stat-label">Tournaments</div>
+                        </div>
+                        <div>
+                            <div class="hero-stat-number">3</div>
+                            <div class="hero-stat-label">Trophies Won</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEWS -->
+        <section class="section news-section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="section-label">Latest Updates</div>
+                        <h2>Club News</h2>
+                    </div>
+                    <div class="line"></div>
+                </div>
+
+                <div id="newsCarousel">
+                    <div class="news-slide active">
+                        <div class="news-grid">
+                            <div class="news-card">
+                                <div class="news-tag">Tournament</div>
+                                <h3>NEXUS Dominates Regional University CS2 League</h3>
+                                <p>Our squad swept through the bracket with a clean 3-0 record, securing first place in
+                                    the Selangor University Esports Championship 2025.</p>
+                                <div class="news-date">July 28, 2025</div>
+                            </div>
+                            <div class="news-card">
+                                <div class="news-tag">Club</div>
+                                <h3>Fall 2025 Registration Now Open</h3>
+                                <p>Looking for new recruits! Whether you're a seasoned Global Elite or a motivated
+                                    Silver, everyone is welcome. Sign-ups close August 30.</p>
+                                <div class="news-date">July 15, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="news-slide" style="display:none">
+                        <div class="news-grid">
+                            <div class="news-card">
+                                <div class="news-tag">Event</div>
+                                <h3>CS2 Major Cologne 2025 Watch Party</h3>
+                                <p>Join us at Block C, LT Hall for a live viewing of the Grand Finals. Free snacks,
+                                    giveaways, and prediction contests for all attendees.</p>
+                                <div class="news-date">June 20, 2025</div>
+                            </div>
+                            <div class="news-card">
+                                <div class="news-tag">Update</div>
+                                <h3>Weekly Scrims Schedule Updated</h3>
+                                <p>Scrims now run every Wednesday and Friday from 8PM to 11PM. New team balancing system
+                                    ensures competitive and fair matchups.</p>
+                                <div class="news-date">June 10, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="news-slide" style="display:none">
+                        <div class="news-grid">
+                            <div class="news-card">
+                                <div class="news-tag">Achievement</div>
+                                <h3>Top 8 at Malaysian University Esports Championship</h3>
+                                <p>Our A-team fought through 32 university teams to finish Top 8 nationally. A historic
+                                    achievement for the club.</p>
+                                <div class="news-date">May 5, 2025</div>
+                            </div>
+                            <div class="news-card">
+                                <div class="news-tag">Community</div>
+                                <h3>Discord Server Hits 200 Members</h3>
+                                <p>Our community continues to grow! We've hit the 200-member milestone on Discord. Join
+                                    for pugs, memes, and rank-up celebrations.</p>
+                                <div class="news-date">April 18, 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-controls">
+                    <button class="carousel-btn" onclick="changeSlide(-1)">&#8592; Prev</button>
+                    <button class="carousel-dot active" onclick="goToSlide(0)"></button>
+                    <button class="carousel-dot" onclick="goToSlide(1)"></button>
+                    <button class="carousel-dot" onclick="goToSlide(2)"></button>
+                    <button class="carousel-btn" onclick="changeSlide(1)">Next &#8594;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATCH HIGHLIGHTS -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="section-label">Don't Miss</div>
+                        <h2>Match Highlights</h2>
+                    </div>
+                    <div class="line"></div>
+                </div>
+
+                <div class="match-grid">
+                    <div class="match-card">
+                        <div class="match-status live">Live</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">Navi</div>
+                                <div class="match-team-name">Natus Vincere</div>
+                            </div>
+                            <div class="match-score">10 – 9</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">FaZe</div>
+                                <div class="match-team-name">FaZe Clan</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Inferno — BLAST Premier Spring Final</div>
+                    </div>
+
+                    <div class="match-card" style="animation-delay: 0.08s;">
+                        <div class="match-status upcoming">Upcoming</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">G2</div>
+                                <div class="match-team-name">G2 Esports</div>
+                            </div>
+                            <div class="match-vs">VS</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">VIT</div>
+                                <div class="match-team-name">Team Vitality</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Aug 18, 2025 — 9:00 PM — IEM Cologne</div>
+                    </div>
+
+                    <div class="match-card" style="animation-delay: 0.12s;">
+                        <div class="match-status upcoming">Upcoming</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">NXS A</div>
+                                <div class="match-team-name">Squad Alpha</div>
+                            </div>
+                            <div class="match-vs">VS</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">NXS B</div>
+                                <div class="match-team-name">Squad Bravo</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Aug 22, 2025 — 8:00 PM — Internal Scrim</div>
+                    </div>
+
+                    <div class="match-card" style="animation-delay: 0.08s;">
+                        <div class="match-status completed">Completed</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">Spirit</div>
+                                <div class="match-team-name">Team Spirit</div>
+                            </div>
+                            <div class="match-score">2 – 1</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">MOUZ</div>
+                                <div class="match-team-name">MOUZ</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Grand Final — IEM Dallas 2025</div>
+                    </div>
+
+                    <div class="match-card" style="animation-delay: 0.12s;">
+                        <div class="match-status completed">Completed</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">NXS</div>
+                                <div class="match-team-name">NEXUS Esport</div>
+                            </div>
+                            <div class="match-score">2 – 0</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">UM</div>
+                                <div class="match-team-name">Univ. of Malaya</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Semi-Final — Uni Esports MY</div>
+                    </div>
+
+                    <div class="match-card" style="animation-delay: 0.16s;">
+                        <div class="match-status upcoming">Upcoming</div>
+                        <div class="match-teams">
+                            <div class="match-team">
+                                <div class="match-team-logo">FURIA</div>
+                                <div class="match-team-name">FURIA</div>
+                            </div>
+                            <div class="match-vs">VS</div>
+                            <div class="match-team">
+                                <div class="match-team-logo">Liquid</div>
+                                <div class="match-team-name">Team Liquid</div>
+                            </div>
+                        </div>
+                        <div class="match-info">Aug 25, 2025 — 11:00 PM — BLAST Fall</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 2.5rem;">
+                    <a href="matches.html" class="btn-outline">View All Matches</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIAL MEDIA -->
+        <section class="section"
+            style="background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="section-label">Follow Us</div>
+                        <h2>Social Media</h2>
+                    </div>
+                    <div class="line"></div>
+                </div>
+                <div class="card-grid cols-2-centered">
+                    <div class="info-card">
+                        <div class="info-card-icon" style="color: #E4405F;">&#9737;</div>
+                        <div class="info-card-title" style="color: #E4405F;">Instagram</div>
+                        <div class="info-card-sub">@nexus_esport</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon" style="color: #5865F2;">&#9641;</div>
+                        <div class="info-card-title" style="color: #5865F2;">Discord</div>
+                        <div class="info-card-sub">200+ Members</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPONSORS -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <div class="section-label">Proudly Supported By</div>
+                        <h2>Our Sponsors</h2>
+                    </div>
+                    <div class="line"></div>
+                </div>
+                <div class="card-grid cols-6">
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #44d62c;">RAZER</div>
+                        <div class="info-card-sub">Gaming Peripherals</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #e4002b;">HyperX</div>
+                        <div class="info-card-sub">Gaming Gear</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #c8a97e;">SECRETLAB</div>
+                        <div class="info-card-sub">Gaming Chairs</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #ff0033;">ASUS ROG</div>
+                        <div class="info-card-sub">Gaming Hardware</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #00a650;">MONSTER</div>
+                        <div class="info-card-sub">Energy Drinks</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-title" style="color: #d0d0d5;">ZOWIE</div>
+                        <div class="info-card-sub">Gaming Monitors</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+
+        <footer>
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <div class="footer-brand">NEXUS ESPORT</div>
+                        <p class="footer-text">The official Counter-Strike 2 esports community at Universiti Tunku Abdul
+                            Rahman. Competing since 2022.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Pages</h6>
+                        <a href="home.html">Home</a>
+                        <a href="aboutus.html">About Us</a>
+                        <a href="ranking.html">Ranking</a>
+                        <a href="event.html">Event</a>
+                        <a href="matches.html">Matches</a>
+                        <a href="joint.html">Join Us</a>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Explore</h6>
+                        <a href="event.html">Events</a>
+                    </div>
+                    <div class="footer-col">
+                        <h6>Connect</h6>
+                        <a href="#" class="social-icon">Discord</a>
+                        <a href="#" class="social-icon">Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">&copy; 2025 NEXUS Esport. All rights reserved. Not affiliated with Valve
+                    Corporation.</div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        // Carousel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.news-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function showSlide(n) {
+            slides.forEach(s => s.style.display = 'none');
+            dots.forEach(d => d.classList.remove('active'));
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].style.display = '';
+            dots[currentSlide].classList.add('active');
+        }
+        function changeSlide(dir) { showSlide(currentSlide + dir); }
+        function goToSlide(n) { showSlide(n); }
+        setInterval(() => changeSlide(1), 6000);
+
+        // Welcome banner (cookie)
+        function setCookie(name, value, days) {
+            var d = new Date(); d.setTime(d.getTime() + days * 86400000);
+            document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/';
+        }
+        function getCookie(name) {
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) { var c = ca[i].trim(); if (c.indexOf(name + '=') === 0) return c.substring(name.length + 1); }
+            return null;
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var hasVisited = getCookie('nexus_visited');
+            var storedName = localStorage.getItem('nexus_username');
+            if (!hasVisited) {
+                var name = prompt('Welcome to NEXUS Esport! What\'s your name?');
+                if (name && name.trim()) localStorage.setItem('nexus_username', name.trim());
+                setCookie('nexus_visited', 'true', 30);
+            }
+        });
+    </script>
+</body>
+
+</html>

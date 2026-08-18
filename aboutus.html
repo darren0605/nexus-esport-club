@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us — Nexus Esport</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ── RESET ── */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ── CUSTOM PROPERTIES ── */
+        :root {
+            --bg: #070709;
+            --surface: #0f1014;
+            --surface-2: #161820;
+            --border: #1e2030;
+            --border-light: #2a2d40;
+            --accent: #00ff88;
+            --accent-dim: #00cc6a;
+            --accent-glow: rgba(0, 255, 136, 0.15);
+            --red: #ff4655;
+            --red-glow: rgba(255, 70, 85, 0.15);
+            --orange: #e8a44a;
+            --blue: #4ac2e8;
+            --purple: #7c6aef;
+            --text: #e8e6e3;
+            --text-muted: #5a5d6e;
+            --text-dim: #3a3d4e;
+            --font-display: 'Bebas Neue', sans-serif;
+            --font-body: 'DM Mono', monospace;
+            --font-heading: 'Syne', sans-serif;
+            --font-serif: 'Cormorant Garamond', serif;
+        }
+
+        /* ── SCANLINE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ── NOISE TEXTURE ── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ── BACKGROUND GRADIENT MESH ── */
+        .bg-mesh {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(0, 255, 136, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 80%, rgba(255, 70, 85, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.02) 0%, transparent 70%);
+        }
+
+        /* ── NAVIGATION ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(7, 7, 9, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-logo::after {
+            content: '//';
+            color: var(--text-dim);
+            margin-left: 0.3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .nav-toggler {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.4rem 0.8rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* ── PAGE WRAPPER ── */
+        .page-wrapper {
+            padding-top: 6rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── HERO SECTION ── */
+        .about-hero {
+            position: relative;
+            padding: 4rem 2.5rem 3rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero-tag {
+            font-family: var(--font-body);
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.1s;
+        }
+
+        .about-hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            letter-spacing: 0.08em;
+            line-height: 0.95;
+            color: var(--text);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.2s;
+        }
+
+        .about-hero h1 .accent {
+            color: var(--accent);
+        }
+
+        .about-hero .hero-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.35s;
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            padding: 3rem 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+
+        .section-tag {
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            letter-spacing: 0.08em;
+            line-height: 1;
+        }
+
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 2.5rem;
+        }
+
+        /* ── MISSION CARDS ── */
+        .mission-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            height: 100%;
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+
+        .mission-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-3px);
+        }
+
+        .mission-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .mission-card h4 {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.8rem;
+        }
+
+        .mission-card p {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        /* ════════════════════════════════════
+           FOUNDING STORY SECTION (NEW)
+           ════════════════════════════════════ */
+        .story-section {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            max-width: 100%;
+            padding: 4rem 2.5rem;
+        }
+
+        .story-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .story-chapter {
+            margin-bottom: 3rem;
+        }
+
+        .story-chapter:last-child {
+            margin-bottom: 0;
+        }
+
+        .chapter-marker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .chapter-marker .marker-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .chapter-marker .marker-year {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .chapter-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            letter-spacing: 0.06em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-title .num {
+            color: var(--text-dim);
+            font-size: 0.7em;
+            margin-right: 0.3rem;
+        }
+
+        .chapter-text {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-text strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .chapter-text .highlight {
+            color: var(--accent);
+            font-weight: 400;
+        }
+
+        .chapter-opening {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--text-muted);
+            border-left: 2px solid var(--accent);
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        /* Story mini timeline */
+        .timeline-mini {
+            position: relative;
+            padding-left: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .timeline-mini::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .tl-item {
+            position: relative;
+            padding: 0 0 1.2rem 1.5rem;
+        }
+
+        .tl-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem;
+            top: 0.35rem;
+            width: 8px;
+            height: 8px;
+            border: 2px solid var(--accent);
+            background: var(--bg);
+            border-radius: 50%;
+        }
+
+        .tl-item .tl-date {
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.15rem;
+        }
+
+        .tl-item .tl-title {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .tl-item .tl-desc {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Story stats */
+        .story-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .story-stat {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .story-stat .ss-num {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            line-height: 1;
+        }
+
+        .story-stat .ss-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+        }
+
+        /* Story division cards */
+        .story-divisions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+        }
+
+        .sd-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 1.2rem;
+            transition: border-color 0.3s;
+        }
+
+        .sd-card:hover {
+            border-color: var(--border-light);
+        }
+
+        .sd-card h4 {
+            font-family: var(--font-heading);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+        }
+
+        .sd-card:nth-child(1) h4 {
+            color: var(--accent);
+        }
+
+        .sd-card:nth-child(2) h4 {
+            color: var(--orange);
+        }
+
+        .sd-card:nth-child(3) h4 {
+            color: var(--blue);
+        }
+
+        .sd-card:nth-child(4) h4 {
+            color: var(--purple);
+        }
+
+        .sd-card:nth-child(5) h4 {
+            color: var(--red);
+        }
+
+        .sd-card p {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Story founders quote */
+        .founders-quote {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .founders-quote::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+
+        .founders-quote::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 2px solid var(--accent);
+            border-right: 2px solid var(--accent);
+        }
+
+        .founders-quote blockquote {
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text-muted);
+            line-height: 1.9;
+            margin-bottom: 0.8rem;
+        }
+
+        .founders-quote .quote-attr {
+            font-family: var(--font-heading);
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+        }
+
+        /* ── COMMITTEE CARDS (4 per row) ── */
+        .committee-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            height: 100%;
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .committee-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        .committee-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .committee-card:hover::before {
+            opacity: 1;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--bg);
+            position: relative;
+        }
+
+        .avatar::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+        }
+
+        .avatar-green {
+            background: var(--accent);
+        }
+
+        .avatar-red {
+            background: var(--red);
+        }
+
+        .avatar-gold {
+            background: var(--orange);
+        }
+
+        .avatar-blue {
+            background: var(--blue);
+        }
+
+        .committee-card h4 {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 0.15rem;
+        }
+
+        .committee-alias {
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+        }
+
+        .committee-role {
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .committee-bio {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+        }
+
+        /* ── BUTTONS ── */
+        .btn-join {
+            font-family: var(--font-heading);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-join:hover {
+            background: #33ffaa;
+            color: var(--bg);
+            letter-spacing: 0.2em;
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .btn-join::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-join:hover::after {
+            left: 100%;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            padding: 3rem 0 2rem;
+            margin-top: auto;
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand::after {
+            content: '//';
+            color: var(--text-dim);
+            margin-left: 0.3rem;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            max-width: 300px;
+        }
+
+        .footer-links h6 {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            margin-bottom: 0.45rem;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+        }
+
+        .social-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .social-icon:hover {
+            color: var(--accent);
+        }
+
+        /* ── ANIMATIONS ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                gap: 1rem;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(7, 7, 9, 0.95);
+                padding: 1.5rem 2.5rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-toggler {
+                display: block;
+            }
+
+            .about-hero {
+                padding: 5rem 1.5rem 2rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .story-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .story-divisions {
+                grid-template-columns: 1fr;
+            }
+
+            .story-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- ══════════════ NAVIGATION ══════════════ -->
+    <nav>
+    <a href="home.html" class="nav-logo">NEXUS ESPORT</a>
+    <button class="nav-toggler" onclick="document.querySelector('.nav-links').classList.toggle('open')">&#9776;</button>
+    <ul class="nav-links">
+      <li><a href="home.html" >Home</a></li>
+      <li><a href="aboutus.html"class="active">About Us</a></li>
+      <li><a href="ranking.html">Ranking</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="matches.html">Matches</a></li>
+      <li><a href="joint.html">Join</a></li>
+    </ul>
+  </nav>
+
+    <div class="page-wrapper">
+
+        <!-- ══════════════ ABOUT HERO ══════════════ -->
+        <section class="about-hero">
+            <p class="hero-tag">// NEXUS UNIVERSITY ESPORT CLUB</p>
+            <h1>ABOUT <span class="accent">THE CLUB</span></h1>
+            <p class="hero-sub">We are UTAR's home for Counter-Strike 2 — a place to watch pro matches together, chat
+                about the game, and ease your way into friendly 5v5s with people who get it.</p>
+        </section>
+
+        <!-- ══════════════ MISSION & VALUES ══════════════ -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <p class="section-tag">// Who We Are</p>
+                    <h2 class="section-title">MISSION &amp; VALUES</h2>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="mission-card fade-up">
+                        <div class="mission-icon"><i class="bi bi-tv"></i></div>
+                        <h4>Watch Together</h4>
+                        <p>Big screen, snacks, and a room full of people yelling at the same clutch. We run watch
+                            parties for every Major and top-tier tournament — no need to know the meta, just come hang
+                            out.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mission-card fade-up" style="animation-delay: 0.1s">
+                        <div class="mission-icon"><i class="bi bi-people"></i></div>
+                        <h4>Build a Lasting Community</h4>
+                        <p>Beyond the game, we're a social hub for CS2 fans at UTAR. Weekly chill sessions, watch
+                            parties, and a 200+ member Discord for chit-chatting, memes, and match talk year-round.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mission-card fade-up" style="animation-delay: 0.2s">
+                        <div class="mission-icon"><i class="bi bi-trophy"></i></div>
+                        <h4>A Path to Friendly Matches</h4>
+                        <p>Once you're comfortable in the community, there's a low-pressure way into 5v5 scrims and
+                            casual tournaments — no tryouts, no pressure, just teammates figuring it out together.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════ OUR STORY (NEW — shortened) ══════════════ -->
+        <section class="story-section fade-up">
+            <div class="story-inner">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <p class="section-tag">// The Origin</p>
+                    <h2 class="section-title" style="font-size: clamp(2rem, 5vw, 3rem);">HOW IT ALL STARTED</h2>
+                </div>
+
+                <!-- Chapter 1 -->
+                <div class="story-chapter">
+                    <div class="chapter-marker">
+                        <div class="marker-line"></div>
+                        <span class="marker-year">SEPTEMBER 2023</span>
+                        <div class="marker-line"></div>
+                    </div>
+                    <h3 class="chapter-title"><span class="num">01</span> THE BEGINNING</h3>
+                    <p class="chapter-opening">
+                        It began the way most things in university do — in a group chat at 2 AM.
+                    </p>
+                    <p class="chapter-text">
+                        Five students from different faculties had one thing in common: they all played CS2
+                        competitively but had <strong>nowhere to compete as a team</strong>. The university had football
+                        clubs, debate teams, and music societies. But for competitive gaming? <span
+                            class="highlight">Nothing.</span> So they made one.
+                    </p>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="story-chapter">
+                    <div class="chapter-marker">
+                        <div class="marker-line"></div>
+                        <span class="marker-year">WEEK ONE</span>
+                        <div class="marker-line"></div>
+                    </div>
+                    <h3 class="chapter-title"><span class="num">02</span> THE FIRST MEETING</h3>
+                    <p class="chapter-text">
+                        They booked Room B304, capacity 30. Expected 10 people. <span class="highlight">47 students
+                            walked in.</span> Some brought their own keyboards. Two professors came out of curiosity.
+                        That night, they didn't just talk about gaming — they talked about <strong>what was
+                            missing</strong>: no organized competition, no training environment, no community.
+                    </p>
+                    <p class="chapter-text">
+                        The club was officially registered the following week.
+                    </p>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="story-chapter">
+                    <div class="chapter-marker">
+                        <div class="marker-line"></div>
+                        <span class="marker-year">2023 — 2024</span>
+                        <div class="marker-line"></div>
+                    </div>
+                    <h3 class="chapter-title"><span class="num">03</span> YEAR ONE — BUILDING THE FOUNDATION</h3>
+                    <p class="chapter-text">
+                        The first year was chaotic and beautiful.
+                    </p>
+                    <div class="timeline-mini">
+                        <div class="tl-item">
+                            <div class="tl-date">Weekly</div>
+                            <div class="tl-title">Friday Night Scrims</div>
+                            <div class="tl-desc">5v5 internal matches. 20+ players every week without fail.</div>
+                        </div>
+                        <div class="tl-item">
+                            <div class="tl-date">Month 3</div>
+                            <div class="tl-title">First Tournament</div>
+                            <div class="tl-desc">CS2 invitational between three universities. Nexus placed second. The
+                                loss lit a fire.</div>
+                        </div>
+                        <div class="tl-item">
+                            <div class="tl-date">Month 6</div>
+                            <div class="tl-title">Coaching & Content</div>
+                            <div class="tl-desc">Ex-semi-pro joined for demo reviews. Highlight reels launched on
+                                Instagram.</div>
+                        </div>
+                    </div>
+                    <p class="chapter-text">
+                        By year's end, Nexus had <strong>72 registered members</strong>.
+                    </p>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="story-chapter">
+                    <div class="chapter-marker">
+                        <div class="marker-line"></div>
+                        <span class="marker-year">2024 — 2025</span>
+                        <div class="marker-line"></div>
+                    </div>
+                    <h3 class="chapter-title"><span class="num">04</span> YEAR TWO — GROWING TOGETHER</h3>
+                    <p class="chapter-text">
+                        Watch parties got bigger, and so did the Discord. Some regulars wanted more than chit-chat, so
+                        the club <span class="highlight">launched a casual internal league</span> — friendly 5v5s, no
+                        tryouts, no pressure — plus the campus's first LAN watch event with <strong>120
+                            attendees</strong>.
+                    </p>
+                    <p class="chapter-text">
+                        It was still a hangout at heart. Just a bigger, louder one.
+                    </p>
+                </div>
+
+                <!-- Chapter 5: What We Do -->
+                <div class="story-chapter">
+                    <h3 class="chapter-title"><span class="num">05</span> WHAT WE DO TODAY</h3>
+                    <div class="story-divisions">
+                        <div class="sd-card">
+                            <h4>Watch Parties</h4>
+                            <p>Majors, weekly HLTV matches, and big-screen viewings on campus — pop in, no commitment
+                                needed.</p>
+                        </div>
+                        <div class="sd-card">
+                            <h4>Community</h4>
+                            <p>A 200+ member Discord for chit-chat, memes, match talk, and welcoming new faces
+                                year-round.</p>
+                        </div>
+                        <div class="sd-card">
+                            <h4>Friendly Matches</h4>
+                            <p>Casual internal 5v5s and scrims — a relaxed on-ramp for anyone curious about playing
+                                together.</p>
+                        </div>
+                        <div class="sd-card">
+                            <h4>Events & Ops</h4>
+                            <p>LAN watch nights, internal leagues, and campus-wide gaming events open to everyone.</p>
+                        </div>
+                        <div class="sd-card">
+                            <h4>Content & Media</h4>
+                            <p>Highlight clips, casual recaps, social media, and live-stream commentary from the group.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Where We Are Now -->
+                <div class="story-chapter">
+                    <h3 class="chapter-title"><span class="num">06</span> WHERE WE STAND NOW</h3>
+                    <div class="story-stats">
+                        <div class="story-stat">
+                            <div class="ss-num">200+</div>
+                            <div class="ss-label">Discord Members</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="ss-num">50+</div>
+                            <div class="ss-label">Active Members</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="ss-num">Weekly</div>
+                            <div class="ss-label">Watch Parties</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="ss-num">1st</div>
+                            <div class="ss-label">Selangor Uni League</div>
+                        </div>
+                        <div class="story-stat">
+                            <div class="ss-num">Top 8</div>
+                            <div class="ss-label">National Championship</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Founders Quote -->
+                <div class="founders-quote fade-up">
+                    <blockquote>
+                        We didn't start Nexus because we thought we'd become the best esport club in the country. We
+                        started it because we were tired of playing alone. Five people in a group chat decided that
+                        competitive gaming deserved the same respect, structure, and community as any other sport on
+                        campus. If you've ever felt like gaming was "just a hobby" — come prove it's more.
+                    </blockquote>
+                    <div class="quote-attr">— The Founding Five, Nexus Esport Club</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════ COMMITTEE MEMBERS (4 per row) ══════════════ -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <p class="section-tag">// Leadership</p>
+                    <h2 class="section-title">COMMITTEE MEMBERS</h2>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="committee-card fade-up">
+                        <div class="avatar avatar-green">AT</div>
+                        <h4>Alex Tan</h4>
+                        <div class="committee-alias">"Phantom"</div>
+                        <div class="committee-role">President</div>
+                        <div class="committee-bio">IGL and founder. Leads strategy sessions and manages all club
+                            operations.</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="committee-card fade-up" style="animation-delay: 0.08s">
+                        <div class="avatar avatar-red">RL</div>
+                        <h4>Ryan Lim</h4>
+                        <div class="committee-alias">"Blitz"</div>
+                        <div class="committee-role">Vice President</div>
+                        <div class="committee-bio">Handles partnerships, sponsorship outreach, and tournament
+                            registrations.</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="committee-card fade-up" style="animation-delay: 0.16s">
+                        <div class="avatar avatar-gold">DC</div>
+                        <h4>David Chen</h4>
+                        <div class="committee-alias">"Flash"</div>
+                        <div class="committee-role">Treasurer</div>
+                        <div class="committee-bio">Oversees club finances, merchandise orders, and budget planning.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="committee-card fade-up" style="animation-delay: 0.24s">
+                        <div class="avatar avatar-blue">ML</div>
+                        <h4>Michelle Lee</h4>
+                        <div class="committee-alias">"Sage"</div>
+                        <div class="committee-role">Event Director</div>
+                        <div class="committee-bio">Organizes watch parties, LAN events, and social gatherings.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════ CTA ══════════════ -->
+        <section class="section text-center">
+            <p class="section-tag fade-up">// Come hang out</p>
+            <h2 class="section-title fade-up" style="animation-delay: 0.1s; font-size: 2.5rem; margin-bottom: 1rem;">
+                BECOME A <span style="color: var(--accent);">MEMBER</span>
+            </h2>
+            <p class="fade-up"
+                style="animation-delay: 0.2s; color: var(--text-muted); max-width: 500px; margin: 0 auto 2rem; font-size: 0.8rem;">
+                Whether you just want to watch matches and chat, or you're ready to try a friendly 5v5, there's a place
+                for you here.
+            </p>
+            <div class="fade-up" style="animation-delay: 0.3s">
+                <a href="joint.html" class="btn-join">Join Nexus Esport</a>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer>
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="footer-brand">NEXUS ESPORT</div>
+                    <p class="footer-text">The official Counter-Strike 2 esports community at Universiti Tunku Abdul
+                        Rahman. Competing since 2022.</p>
+                </div>
+                <div class="col-lg-2 col-6 footer-links">
+                    <h6>Pages</h6>
+                    <a href="index.html">Home</a>
+                    <a href="aboutus.html">About Us</a>
+                    <a href="ranking.html">Ranking</a>
+                    <a href="event.html">Events</a>
+                    <a href="matches.html">Matches</a>
+                    <a href="joint.html">Join Us</a>
+                </div>
+                <div class="col-lg-2 col-6 footer-links">
+                    <h6>Connect</h6>
+                    <a href="#"><i class="bi bi-discord me-2"></i>Discord</a>
+                    <a href="#"><i class="bi bi-instagram me-2"></i>Instagram</a>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                &copy; 2026 Nexus Esport — UTAR CS2 Esports Club. All rights reserved. Not affiliated with Valve
+                Corporation.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll-triggered fade-up animations
+        document.addEventListener('DOMContentLoaded', function () {
+            var animatedEls = document.querySelectorAll('.fade-up');
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animatedEls.forEach(function (el) {
+                if (el.closest('.about-hero')) return;
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+
+</html>

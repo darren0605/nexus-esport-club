@@ -1,0 +1,52 @@
+{
+  "events": [
+    {
+      "name": "IEM Cologne 2026",
+      "matches": [
+        { "id": "iem-qf1", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Falcons", "logo1": "images/FalconsLogo.png", "team2": "MOUZ", "logo2": "images/MouzLogo.png", "score": "2 : 0", "link": "FalconsVSMouz.html" },
+        { "id": "iem-qf2", "stage": "Quarterfinals", "status": "FINISHED", "team1": "G2 Esports", "logo1": "images/G2Logo.png", "team2": "Astralis", "logo2": "images/AstralisLogo.png", "score": "2 : 1", "link": "match-detail.html?id=iem-qf2" },
+        { "id": "iem-qf3", "stage": "Quarterfinals", "status": "FINISHED", "team1": "FURIA", "logo1": "images/FuriaLogo.png", "team2": "Vitality", "logo2": "images/VitalityLogo.png", "score": "2 : 0", "link": "match-detail.html?id=iem-qf3" },
+        { "id": "iem-qf4", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Spirit", "logo1": "images/SpiritLogo.png", "team2": "Natus Vincere", "logo2": "images/NatusLogo.png", "score": "2 : 1", "link": "match-detail.html?id=iem-qf4" },
+        { "id": "iem-sf1", "stage": "Semifinals", "status": "FINISHED", "team1": "Falcons", "logo1": "images/FalconsLogo.png", "team2": "G2 Esports", "logo2": "images/G2Logo.png", "score": "2 : 1", "link": "FalconsVSG2.html" },
+        { "id": "iem-sf2", "stage": "Semifinals", "status": "FINISHED", "team1": "FURIA", "logo1": "images/FuriaLogo.png", "team2": "Spirit", "logo2": "images/SpiritLogo.png", "score": "2 : 1", "link": "match-detail.html?id=iem-sf2" },
+        { "id": "iem-gf", "stage": "Grand Final", "status": "LIVE", "team1": "Falcons", "logo1": "images/FalconsLogo.png", "team2": "FURIA", "logo2": "images/FuriaLogo.png", "score": "1 : 0", "link": "FalconsVSFuria.html" }
+      ]
+    },
+    {
+      "name": "BLAST Bounty 2026",
+      "matches": [
+        { "id": "bb-qf1", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Spirit", "logo1": "images/SpiritLogo.png", "team2": "G2 Esports", "logo2": "images/G2Logo.png", "score": "2 : 0", "link": "SpiritVSG2.html" },
+        { "id": "bb-qf2", "stage": "Quarterfinals", "status": "FINISHED", "team1": "FaZe Clan", "logo1": "images/FaZeLogo.png", "team2": "The MongolZ", "logo2": "images/MongoLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "bb-qf3", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Natus Vincere", "logo1": "images/NatusLogo.png", "team2": "Eternal Fire", "logo2": "images/EternalLogo.png", "score": "2 : 0", "link": "#" },
+        { "id": "bb-qf4", "stage": "Quarterfinals", "status": "FINISHED", "team1": "MOUZ", "logo1": "images/MouzLogo.png", "team2": "Astralis", "logo2": "images/AstralisLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "bb-sf1", "stage": "Semifinals", "status": "FINISHED", "team1": "Spirit", "logo1": "images/SpiritLogo.png", "team2": "FaZe Clan", "logo2": "images/FaZeLogo.png", "score": "2 : 1", "link": "SpiritVSFaze.html" },
+        { "id": "bb-sf2", "stage": "Semifinals", "status": "FINISHED", "team1": "Natus Vincere", "logo1": "images/NatusLogo.png", "team2": "MOUZ", "logo2": "images/MouzLogo.png", "score": "2 : 0", "link": "#" },
+        { "id": "bb-gf", "stage": "Grand Final", "status": "FINISHED", "team1": "Spirit", "logo1": "images/SpiritLogo.png", "team2": "Natus Vincere", "logo2": "images/NatusLogo.png", "score": "3 : 1", "link": "SpiritVSNavi.html" }
+      ]
+    },
+    {
+      "name": "ESL Pro League Season 21",
+      "matches": [
+        { "id": "epl-qf1", "stage": "Quarterfinals", "status": "FINISHED", "team1": "MOUZ", "logo1": "images/MouzLogo.png", "team2": "Eternal Fire", "logo2": "images/EternalLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "epl-qf2", "stage": "Quarterfinals", "status": "FINISHED", "team1": "The MongolZ", "logo1": "images/MongoLogo.png", "team2": "Astralis", "logo2": "images/AstralisLogo.png", "score": "2 : 0", "link": "#" },
+        { "id": "epl-qf3", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Vitality", "logo1": "images/VitalityLogo.png", "team2": "FaZe Clan", "logo2": "images/FaZeLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "epl-qf4", "stage": "Quarterfinals", "status": "FINISHED", "team1": "G2 Esports", "logo1": "images/G2Logo.png", "team2": "Falcons", "logo2": "images/FalconsLogo.png", "score": "2 : 0", "link": "#" },
+        { "id": "epl-sf1", "stage": "Semifinals", "status": "UPCOMING", "team1": "MOUZ", "logo1": "images/MouzLogo.png", "team2": "The MongolZ", "logo2": "images/MongoLogo.png", "score": "vs", "link": "#" },
+        { "id": "epl-sf2", "stage": "Semifinals", "status": "UPCOMING", "team1": "Vitality", "logo1": "images/VitalityLogo.png", "team2": "G2 Esports", "logo2": "images/G2Logo.png", "score": "vs", "link": "#" },
+        { "id": "epl-gf", "stage": "Grand Final", "status": "UPCOMING", "team1": "TBD", "logo1": "images/TBDLogo.png", "team2": "TBD", "logo2": "images/TBDLogo.png", "score": "vs", "link": "#" }
+      ]
+    },
+    {
+      "name": "BLAST Premier 2024",
+      "matches": [
+        { "id": "bp-qf1", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Astralis", "logo1": "images/AstralisLogo.png", "team2": "G2 Esports", "logo2": "images/G2Logo.png", "score": "2 : 0", "link": "#" },
+        { "id": "bp-qf2", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Vitality", "logo1": "images/VitalityLogo.png", "team2": "MOUZ", "logo2": "images/MouzLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "bp-qf3", "stage": "Quarterfinals", "status": "FINISHED", "team1": "FaZe Clan", "logo1": "images/FaZeLogo.png", "team2": "Spirit", "logo2": "images/SpiritLogo.png", "score": "2 : 0", "link": "FazeVSSpirit.html" },
+        { "id": "bp-qf4", "stage": "Quarterfinals", "status": "FINISHED", "team1": "Natus Vincere", "logo1": "images/NatusLogo.png", "team2": "The MongolZ", "logo2": "images/MongoLogo.png", "score": "2 : 1", "link": "#" },
+        { "id": "bp-sf1", "stage": "Semifinals", "status": "FINISHED", "team1": "Astralis", "logo1": "images/AstralisLogo.png", "team2": "Vitality", "logo2": "images/VitalityLogo.png", "score": "1 : 2", "link": "#" },
+        { "id": "bp-sf2", "stage": "Semifinals", "status": "FINISHED", "team1": "FaZe Clan", "logo1": "images/FaZeLogo.png", "team2": "Natus Vincere", "logo2": "images/NatusLogo.png", "score": "2 : 0", "link": "FazeVSNavi.html" },
+        { "id": "bp-gf", "stage": "Grand Final", "status": "FINISHED", "team1": "Vitality", "logo1": "images/VitalityLogo.png", "team2": "FaZe Clan", "logo2": "images/FaZeLogo.png", "score": "3 : 1", "link": "FazeVSVitality.html" }
+      ]
+    }
+  ]
+}
